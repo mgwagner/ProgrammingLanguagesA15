@@ -1,0 +1,86 @@
+<!-- Matthew Graham Wagner
+     Professor Coyle
+     CSE 3342: Programming Languages
+     2 November 2017 -->
+
+<!DOCTYPE>
+<html>
+    <head>
+    <meta charset="utf-8"/>
+    <style>
+        body { background-color: #CC00FF } </style>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+        <script>
+        
+        function callAjax(parm1, parm2) {
+            // set up URL for AJAX call
+            url = 'https://s2.smu.edu/~coyle/python/jsonJumpStart/sendJson.py';
+            // log for debug
+            console.log("In callAjax: parms = " + parm1 + "," + parm2);
+            // Make the AJAX CALL
+            // Note that we are passing a JS Object to the jQuery function $.ajax( )
+            $.ajax({
+                type: 'GET',
+                url: url,
+                // tell Ajax to expect json coming in from server dataType: "json",
+                // wait for server to respond after making request async: false,
+                // this will append ?p1=<val>&p2=<val> to URL data: {p1:parm1,p2:parm2},
+                    success: function(response) {
+                        // msg will be a JS (JSON) Object with fields
+                        console.log("Success:" + JSON.stringify(response));
+                        // Update web page with data from server document.getElementById("responseKey").innerHTML =
+                        "The JSON returned from the server included a property test = " +
+                        response.test ; document.getElementById("responseKey").style.color = "red";
+                        document.getElementById("responseString").innerHTML = "The Response String was: " + JSON.stringify(response);
+                        document.getElementById("responseString").style.color = "green"; },
+
+                        error: function (jqXHR, exceptionStr) {
+                            // jqXHR is a JS object with properties - of interest to us is jqXHR.status (404, 500, etc.)
+                            // exceptionStr will have additional clues
+                            if (jqXHR.status === 0) {
+                                alert('Unable to connect.\n Verify Network.');
+                            } else if (jqXHR.status == 404) { 
+                                alert('Requested URL not found. [404]');
+                        } else if (jqXHR.status == 500) {
+                            alert('Internal Server Error 500. Due to either a)syntax error in server code or '+ 
+                            'b)windows dev without running dos2unix.');
+                            // check exceptionStr for a clue what may have happened to cause the error else if (exceptionStr === 'parsererror') {
+                                alert('Error parsing data from Server.\n' +
+                                'If expecting JSON check that only JSON was sent.\n' +
+                                'Tip: Use curl to test your server code');
+                            } else if (exceptionStr === 'timeout') {
+                                alert('Time out error.');
+                            } else if (exceptionStr === 'abort') {
+                                alert('Ajax request aborted.'); 
+                            } else {
+                                    alert('An Error Occurred. see below.\n' + jqXHR.responseText);
+                            }
+                        }
+                    });
+                }
+                function talkToServer() {
+                    // pull value out of TextBox1 field
+                    var s1 = document.getElementById('textBox1').value;
+                    var s2 = document.getElementById('textBox2').value;
+                    console.log("talkToServer: s1=" + s1 + " s2=" + s2); 89
+                    // pass parms to function that actually makes the Ajax call
+                    callAjax(s1,s2);
+                }
+
+            </script>
+            </head>
+            <body>
+            <h2>Matthew Graham Wagner</h2>
+            <h3>43809016</h3>
+            Area Code: <input name="textBox1" type="text" maxlength="12" id="textBox1" class="searchField"/></p>
+            Phone #: <input name="textBox2" type="text" maxlength="12" id="textBox2" class="searchField"/></p>
+            <button onclick="talkToServer()">VALIDATE PHONE</button>
+            <h3 id="responseKey"></h3>
+            <h4 id="responseString"></h3>
+            </body>
+            </html>
+
+
+
+
+
