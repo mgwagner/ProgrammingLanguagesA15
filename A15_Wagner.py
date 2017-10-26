@@ -1,4 +1,4 @@
-#!/usr/bin/env python 118
+#!/usr/bin/env python
 # Matthew Graham Wagner
 # Professor Coyle
 # CSE 3342: Programming Languages
@@ -16,14 +16,17 @@ cgitb.enable()
 print "Content-Type: text/json\n"
 
 #create a Python dictionary to send as JSON
-mydict = {"test": True}
+#mydict = {"Situation": "Valid", "PhoneNum": "936-647-6243", "State": "New York"}
+#mydict = {"Situation": "InvalidFormat", "PhoneNum": "936-647-6242"}
+mydict = {"Situation": "InvalidAreaCode", "AreaCode": "936"}
+
 
 #extract paramters (keys and values) from client
-parmObj = cgi.FieldStorage()
-
+areaObj = cgi.FieldStorage()
+phoneNumObj = cgi.FieldStorage()
 #iterate over keys - add key-value to mydict
-for key in parmObj.keys():
-    mydict[key] = parmObj.getvalue(key)
+for key in areaObj.keys():
+    mydict[key] = areaObj.getvalue(key)
 
 # convert dict to json string
 json_data = json.dumps(mydict)

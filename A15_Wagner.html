@@ -14,7 +14,7 @@
         
         function callAjax(parm1, parm2) {
             // set up URL for AJAX call
-            url = 'https://s2.smu.edu/~coyle/python/jsonJumpStart/sendJson.py';
+            url = 'https://s2.smu.edu/~mwagner/cse3342/A15_Wagner.py';
             // log for debug
             console.log("In callAjax: parms = " + parm1 + "," + parm2);
             // Make the AJAX CALL
@@ -28,11 +28,24 @@
                     success: function(response) {
                         // msg will be a JS (JSON) Object with fields
                         console.log("Success:" + JSON.stringify(response));
-                        // Update web page with data from server document.getElementById("responseKey").innerHTML =
-                        "The JSON returned from the server included a property test = " +
-                        response.test ; document.getElementById("responseKey").style.color = "red";
-                        document.getElementById("responseString").innerHTML = "The Response String was: " + JSON.stringify(response);
-                        document.getElementById("responseString").style.color = "green"; },
+                        // Update web page with data from server 
+                        if (response.Situation == "Valid"){
+                            document.getElementById("responseString").innerHTML = "VALID: " + response.PhoneNum + " " + response.State;
+                            document.getElementById("responseString").style.color = "green";
+                        }
+                        else if(response.Situation == "InvalidFormat"){
+                            document.getElementById("responseString").innerHTML = "INVALID Phone Number " + response.PhoneNum;
+                            document.getElementById("responseString").style.color = "red";
+                        }
+                        else if(response.Situation == "InvalidAreaCode"){
+                            document.getElementById("responseString").innerHTML = "INVALID AREA CODE " + response.AreaCode;
+                            document.getElementById("responseString").style.color = "red";
+                        }
+                        // document.getElementById("responseKey").innerHTML = "The JSON returned from the server included a property test = " + response.test; 
+                        // document.getElementById("responseKey").style.color = "red";
+                        // document.getElementById("responseString").innerHTML = "The Response String was: " + JSON.stringify(response);
+                        // document.getElementById("responseString").style.color = "green";
+                    },
 
                         error: function (jqXHR, exceptionStr) {
                             // jqXHR is a JS object with properties - of interest to us is jqXHR.status (404, 500, etc.)
@@ -62,7 +75,7 @@
                     // pull value out of TextBox1 field
                     var s1 = document.getElementById('textBox1').value;
                     var s2 = document.getElementById('textBox2').value;
-                    console.log("talkToServer: s1=" + s1 + " s2=" + s2); 89
+                    console.log("talkToServer: s1=" + s1 + " s2=" + s2); 
                     // pass parms to function that actually makes the Ajax call
                     callAjax(s1,s2);
                 }
